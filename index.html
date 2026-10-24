@@ -186,12 +186,17 @@
             transform: scale(0.985);
         }
 
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
         .btn-primary {
             background: var(--color-ink-soft);
             color: var(--color-paper);
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             background: var(--color-ink);
         }
 
@@ -201,7 +206,7 @@
             border-color: var(--color-hairline);
         }
 
-        .btn-outline:hover {
+        .btn-outline:hover:not(:disabled) {
             background: var(--color-surface-alt);
         }
 
@@ -210,7 +215,7 @@
             color: var(--color-ink);
         }
 
-        .btn-ghost:hover {
+        .btn-ghost:hover:not(:disabled) {
             background: #ececec;
         }
 
@@ -236,6 +241,29 @@
 
         .btn:hover .btn-arrow {
             opacity: 0.9;
+        }
+
+        /* ── Badge "Gana premio" en Califícanos ── */
+        .btn-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: var(--color-ember);
+            color: #ffffff;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            flex-shrink: 0;
+            box-shadow: 0 1px 4px rgba(231, 0, 11, 0.35);
+            animation: badge-pulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes badge-pulse {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.07); }
         }
 
         /* ── Footer ── */
@@ -442,13 +470,13 @@
             color: var(--color-ink);
             width: 28px;
             height: 28px;
-            background border-radius: 50%;
+            border-radius: 50%;
             font-size: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: 0.15s ease;
+            transition: background 0.15s ease;
             z-index: 2;
         }
 
@@ -549,6 +577,249 @@
             color: var(--color-mid-gray);
             font-size: 13px;
             flex-shrink: 0;
+        }
+
+        /* ── Modal Llamar Mesero ── */
+        .waiter-modal {
+            max-height: 90dvh;
+            overflow-y: auto;
+        }
+
+        .table-field {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            background: var(--color-canvas);
+            border: 1px solid var(--color-hairline);
+            border-radius: var(--radius-2xl);
+            padding: 12px 16px;
+            margin-bottom: var(--spacing-4);
+            transition: border-color 0.2s ease;
+        }
+
+        .table-field:focus-within {
+            border-color: var(--color-ink);
+        }
+
+        .table-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-ink);
+            white-space: nowrap;
+        }
+
+        .table-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: var(--font-geist);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-ink);
+            text-align: right;
+            outline: none;
+            min-width: 0;
+            -moz-appearance: textfield;
+            letter-spacing: -0.01em;
+        }
+
+        .table-input::-webkit-outer-spin-button,
+        .table-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .table-input::placeholder {
+            color: var(--color-mid-gray);
+            font-weight: 400;
+            font-size: 14px;
+        }
+
+        .table-field.shake {
+            animation: shake 0.45s ease;
+            border-color: var(--color-ember);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .waiter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-2);
+        }
+
+        .waiter-opt {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            border-radius: var(--radius-2xl);
+            background: var(--color-canvas);
+            border: 1px solid transparent;
+            font-family: var(--font-geist);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-ink);
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.15s, border-color 0.15s, transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 48px;
+        }
+
+        .waiter-opt:hover {
+            background: var(--color-surface-alt);
+            border-color: var(--color-hairline);
+        }
+
+        .waiter-opt:active {
+            transform: scale(0.97);
+        }
+
+        .waiter-opt-wide {
+            grid-column: 1 / -1;
+        }
+
+        .waiter-opt-primary {
+            background: var(--color-ink-soft);
+            color: var(--color-paper);
+        }
+
+        .waiter-opt-primary:hover {
+            background: var(--color-ink);
+        }
+
+        .opt-icon {
+            font-size: 17px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .opt-label {
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.25;
+        }
+
+        /* Vista "otra solicitud" */
+        .other-table-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-radius: var(--radius-2xl);
+            background: var(--color-canvas);
+            border: 1px solid var(--color-hairline);
+            margin-bottom: var(--spacing-3);
+            font-size: 13px;
+            color: var(--color-mid-gray);
+        }
+
+        .other-table-bar strong {
+            color: var(--color-ink);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .other-textarea {
+            width: 100%;
+            min-height: 110px;
+            border: 1px solid var(--color-hairline);
+            border-radius: var(--radius-2xl);
+            padding: 12px 14px;
+            font-family: var(--font-geist);
+            font-size: 14px;
+            color: var(--color-ink);
+            resize: vertical;
+            background: var(--color-canvas);
+            outline: none;
+            margin-bottom: var(--spacing-3);
+            transition: border-color 0.15s ease;
+        }
+
+        .other-textarea:focus {
+            border-color: var(--color-ink);
+        }
+
+        .other-textarea::placeholder {
+            color: var(--color-mid-gray);
+        }
+
+        .other-actions {
+            display: flex;
+            gap: var(--spacing-2);
+        }
+
+        .other-actions .btn {
+            justify-content: center;
+            flex: 1;
+        }
+
+        /* Vista "enviado" */
+        .sent-view {
+            text-align: center;
+            padding: var(--spacing-2) 0 var(--spacing-1);
+        }
+
+        .sent-icon {
+            font-size: 48px;
+            margin-bottom: var(--spacing-3);
+            line-height: 1;
+            animation: pop-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes pop-in {
+            from { transform: scale(0.4); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+
+        .sent-view h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-ink);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .sent-view p {
+            font-size: 14px;
+            color: var(--color-mid-gray);
+            margin-bottom: var(--spacing-5);
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .sent-view p strong {
+            color: var(--color-ink);
+            font-weight: 600;
+        }
+
+        .sent-actions {
+            display: flex;
+            gap: var(--spacing-2);
+        }
+
+        .sent-actions .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        /* Spinner de carga */
+        .loading-spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid var(--color-hairline);
+            border-top-color: var(--color-ink);
+            border-radius: 50%;
+            margin: 0 auto var(--spacing-3);
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* ── Ruleta ── */
@@ -864,14 +1135,24 @@
 
         <!-- Botones -->
         <nav class="btn-group" aria-label="Acciones principales">
+            <button
+                class="btn btn-primary"
+                onclick="openWaiter()"
+                type="button"
+            >
+                <span class="btn-icon">🔔</span>
+                <span class="btn-label">Llamar al mesero</span>
+                <span class="btn-arrow">→</span>
+            </button>
+
             <a
                 href="https://Barbacoa-La-Casa-Vieja.github.io/Men-"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="btn btn-primary"
+                class="btn btn-outline"
             >
-                <span class="btn-icon">🍽️</span>
-                <span class="btn-label">Ver Menú</span>
+                <span class="btn-icon">🛵</span>
+                <span class="btn-label">Pedir a domicilio</span>
                 <span class="btn-arrow">↗</span>
             </a>
 
@@ -884,7 +1165,7 @@
             >
                 <span class="btn-icon">⭐</span>
                 <span class="btn-label">Califícanos</span>
-                <span class="btn-arrow">↗</span>
+                <span class="btn-badge">🎁 Gana</span>
             </a>
 
             <a
@@ -993,6 +1274,134 @@
         </div>
     </div>
 
+    <!-- Modal Llamar al Mesero -->
+    <div class="modal-overlay" id="waiterOverlay" onclick="closeWaiterOnOverlay(event)">
+        <div class="modal waiter-modal" role="dialog" aria-modal="true" aria-labelledby="waiterTitle">
+            <div class="modal-handle" aria-hidden="true"></div>
+            <button class="modal-close" onclick="closeWaiter()" type="button" aria-label="Cerrar">✕</button>
+
+            <div class="modal-header">
+                <div class="modal-icon-wrap">🔔</div>
+                <h2 id="waiterTitle">Llamar al mesero</h2>
+                <p>¿Qué necesitas?</p>
+            </div>
+
+            <!-- Vista principal -->
+            <div id="waiterMain">
+                <label class="table-field" id="tableField" for="tableNumber">
+                    <span class="table-label">Mesa N.º</span>
+                    <input
+                        type="number"
+                        id="tableNumber"
+                        class="table-input"
+                        inputmode="numeric"
+                        min="1"
+                        max="999"
+                        placeholder="Ej. 5"
+                        autocomplete="off"
+                    />
+                </label>
+
+                <div class="waiter-grid" id="waiterGrid">
+                    <button class="waiter-opt" data-req="Tortillas" type="button">
+                        <span class="opt-icon">🫓</span>
+                        <span class="opt-label">Tortillas</span>
+                    </button>
+                    <button class="waiter-opt" data-req="Salsa verde" type="button">
+                        <span class="opt-icon">🥑</span>
+                        <span class="opt-label">Salsa verde</span>
+                    </button>
+                    <button class="waiter-opt" data-req="Salsa roja de la casa" type="button">
+                        <span class="opt-icon">🌶️</span>
+                        <span class="opt-label">Roja de la casa</span>
+                    </button>
+                    <button class="waiter-opt" data-req="Salsa borracha" type="button">
+                        <span class="opt-icon">🍶</span>
+                        <span class="opt-label">Salsa borracha</span>
+                    </button>
+                    <button class="waiter-opt" data-req="Limones" type="button">
+                        <span class="opt-icon">🍋</span>
+                        <span class="opt-label">Limones</span>
+                    </button>
+                    <button class="waiter-opt" data-req="Cebolla" type="button">
+                        <span class="opt-icon">🧅</span>
+                        <span class="opt-label">Cebolla</span>
+                    </button>
+                    <button class="waiter-opt" data-req="Cilantro" type="button">
+                        <span class="opt-icon">🌿</span>
+                        <span class="opt-label">Cilantro</span>
+                    </button>
+                    <button class="waiter-opt" data-req="Servilletas" type="button">
+                        <span class="opt-icon">🧻</span>
+                        <span class="opt-label">Servilletas</span>
+                    </button>
+
+                    <button class="waiter-opt waiter-opt-wide" data-action="other" type="button">
+                        <span class="opt-icon">📝</span>
+                        <span class="opt-label">Otra solicitud</span>
+                    </button>
+
+                    <button
+                        class="waiter-opt waiter-opt-wide waiter-opt-primary"
+                        data-req="Pedir la cuenta"
+                        data-tipo="cuenta"
+                        type="button"
+                    >
+                        <span class="opt-icon">🧾</span>
+                        <span class="opt-label">Pedir la cuenta</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Vista "otra solicitud" -->
+            <div id="waiterOther" style="display: none;">
+                <div class="other-table-bar">
+                    <span>📋 Solicitud para</span>
+                    <strong id="otherTableDisplay">Mesa —</strong>
+                </div>
+                <textarea
+                    id="otherText"
+                    class="other-textarea"
+                    placeholder="Ej. Necesitamos una silla extra, más agua, etc."
+                    maxlength="240"
+                ></textarea>
+                <div class="other-actions">
+                    <button class="btn btn-outline" onclick="backToOptions()" type="button">Volver</button>
+                    <button class="btn btn-primary" onclick="sendOther()" type="button">Enviar</button>
+                </div>
+            </div>
+
+            <!-- Vista "enviando" -->
+            <div id="waiterLoading" class="sent-view" style="display: none;">
+                <div class="loading-spinner" aria-hidden="true"></div>
+                <h3>Enviando solicitud...</h3>
+                <p>Un momento por favor</p>
+            </div>
+
+            <!-- Vista "enviado" -->
+            <div id="waiterSent" class="sent-view" style="display: none;">
+                <div class="sent-icon">✅</div>
+                <h3>¡Solicitud enviada!</h3>
+                <p id="sentDetail"></p>
+                <div class="sent-actions">
+                    <button class="btn btn-outline" onclick="backToOptions()" type="button">Otra solicitud</button>
+                    <button class="btn btn-primary" onclick="closeWaiter()" type="button">Listo</button>
+                </div>
+            </div>
+
+            <!-- Vista "error" -->
+            <div id="waiterError" class="sent-view" style="display: none;">
+                <div class="sent-icon" style="color: var(--color-ember);">⚠️</div>
+                <h3>No se pudo enviar</h3>
+                <p id="errorDetail">Revisa tu conexión a internet e intenta de nuevo.</p>
+                <div class="sent-actions">
+                    <button class="btn btn-outline" onclick="backToOptions()" type="button">Volver</button>
+                    <button class="btn btn-primary" onclick="retrySend()" type="button">Reintentar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Ruleta -->
     <div class="roulette-overlay" id="rouletteOverlay" onclick="closeRouletteOnOverlay(event)">
         <div class="roulette-modal" role="dialog" aria-modal="true" aria-labelledby="rouletteTitle">
@@ -1033,6 +1442,30 @@
     </div>
 
     <script>
+        /* ══════════════════════════════════════════════════════════════
+           ⚙️  CONFIGURACIÓN DEL WEBHOOK DE MAKE
+           ─────────────────────────────────────────────────────────────
+           Pega aquí la URL de tu "Custom Webhook" de Make.
+           La encuentras en Make → tu escenario → módulo Webhook → "Copy address".
+           ══════════════════════════════════════════════════════════════ */
+        const WEBHOOK_URL = 'https://hook.us1.make.com/REEMPLAZA_ESTO_CON_TU_URL_DE_MAKE';
+
+        // ── Helpers de almacenamiento ──
+        function getLS(key)   { try { return localStorage.getItem(key); } catch (e) { return null; } }
+        function setLS(k, v)  { try { localStorage.setItem(k, v); }       catch (e) {} }
+        function removeLS(k)  { try { localStorage.removeItem(k); }       catch (e) {} }
+
+        function todayStr() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[c]);
+        }
+
         // ── Modal Spotify ──
         function openModal() {
             document.getElementById('spotifyModal').classList.add('active');
@@ -1050,17 +1483,18 @@
             }
         }
 
+        // ── Tecla Escape ──
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                // Si la confirmación está abierta, primero la cerramos
-                if (document.getElementById('confirmOverlay').classList.contains('active')) {
-                    cancelExit();
-                    return;
-                }
+            if (e.key !== 'Escape') return;
+            if (document.getElementById('confirmOverlay').classList.contains('active')) {
+                cancelExit();
+            } else if (document.getElementById('waiterOverlay').classList.contains('active')) {
+                // No cerrar mientras se está enviando
+                if (!isSendingRequest) closeWaiter();
+            } else if (document.getElementById('rouletteOverlay').classList.contains('active')) {
+                requestCloseRoulette();
+            } else if (document.getElementById('spotifyModal').classList.contains('active')) {
                 closeModal();
-                if (document.getElementById('rouletteOverlay').classList.contains('active')) {
-                    requestCloseRoulette();
-                }
             }
         });
 
@@ -1080,9 +1514,205 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
+           LLAMAR AL MESERO  →  WEBHOOK DE MAKE
+           ═══════════════════════════════════════════════════════════ */
+        const LS_TABLE = 'cv_tableNumber';
+
+        let isSendingRequest = false;
+        let lastAttempt      = null;   // { table, req, tipo }
+
+        function openWaiter() {
+            const overlay = document.getElementById('waiterOverlay');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            const saved = getLS(LS_TABLE);
+            document.getElementById('tableNumber').value = saved || '';
+
+            showWaiterView('main');
+        }
+
+        function closeWaiter() {
+            if (isSendingRequest) return; // no cerrar a media petición
+            document.getElementById('waiterOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeWaiterOnOverlay(e) {
+            if (e.target === document.getElementById('waiterOverlay')) closeWaiter();
+        }
+
+        function showWaiterView(view) {
+            document.getElementById('waiterMain').style.display    = view === 'main'    ? '' : 'none';
+            document.getElementById('waiterOther').style.display   = view === 'other'   ? '' : 'none';
+            document.getElementById('waiterLoading').style.display = view === 'loading' ? '' : 'none';
+            document.getElementById('waiterSent').style.display    = view === 'sent'    ? '' : 'none';
+            document.getElementById('waiterError').style.display   = view === 'error'   ? '' : 'none';
+
+            if (view === 'other') {
+                document.getElementById('otherText').value = '';
+                setTimeout(() => document.getElementById('otherText').focus(), 60);
+            }
+        }
+
+        function getTableNumber() {
+            return document.getElementById('tableNumber').value.trim();
+        }
+
+        function requireTable() {
+            const raw = getTableNumber();
+            const n = parseInt(raw, 10);
+            if (!raw || isNaN(n) || n < 1 || n > 999) {
+                const field = document.getElementById('tableField');
+                field.classList.remove('shake');
+                void field.offsetWidth;
+                field.classList.add('shake');
+                document.getElementById('tableNumber').focus();
+                setTimeout(() => field.classList.remove('shake'), 500);
+                return null;
+            }
+            setLS(LS_TABLE, String(n));
+            return String(n);
+        }
+
+        // Delegación de eventos en la rejilla de opciones
+        document.getElementById('waiterGrid').addEventListener('click', (e) => {
+            const btn = e.target.closest('.waiter-opt');
+            if (!btn) return;
+
+            if (btn.dataset.action === 'other') {
+                openOtherView();
+            } else if (btn.dataset.req) {
+                const table = requireTable();
+                if (!table) return;
+                const tipo = btn.dataset.tipo || 'opcion';
+                sendWaiterRequest(table, btn.dataset.req, tipo);
+            }
+        });
+
+        function openOtherView() {
+            const table = requireTable();
+            if (!table) return;
+            document.getElementById('otherTableDisplay').textContent = 'Mesa ' + table;
+            showWaiterView('other');
+        }
+
+        function sendOther() {
+            const txt = document.getElementById('otherText').value.trim();
+            if (!txt) {
+                document.getElementById('otherText').focus();
+                return;
+            }
+            const table = requireTable();
+            if (!table) return;
+            sendWaiterRequest(table, txt, 'otra');
+        }
+
+        function backToOptions() {
+            showWaiterView('main');
+        }
+
+        function retrySend() {
+            if (lastAttempt) {
+                sendWaiterRequest(lastAttempt.table, lastAttempt.req, lastAttempt.tipo);
+            } else {
+                backToOptions();
+            }
+        }
+
+        /* ── Envío real al webhook de Make ── */
+        async function sendWaiterRequest(table, req, tipo) {
+            if (isSendingRequest) return;
+
+            // Aviso si aún no se configuró la URL
+            if (!WEBHOOK_URL || WEBHOOK_URL.includes('REEMPLAZA_ESTO')) {
+                console.warn('[Waiter] Falta configurar WEBHOOK_URL con tu URL de Make.');
+                showError('Falta configurar el webhook de Make. Pega tu URL en la constante WEBHOOK_URL.');
+                return;
+            }
+
+            isSendingRequest = true;
+            lastAttempt = { table, req, tipo };
+
+            // Bloquea botones mientras se envía
+            setWaiterButtonsDisabled(true);
+            showWaiterView('loading');
+
+            const now = new Date();
+            const payload = {
+                mesa:          table,
+                solicitud:     req,
+                tipo:          tipo, // 'opcion' | 'otra' | 'cuenta'
+                restaurante:   'Barbacoa de la Casa Vieja',
+                fecha:         now.toISOString(),
+                fecha_local:   now.toLocaleString('es-MX', { timeZone: 'America/Mexico_City' }),
+                hora_local:    now.toLocaleTimeString('es-MX', { timeZone: 'America/Mexico_City', hour: '2-digit', minute: '2-digit' }),
+                timestamp:     now.getTime(),
+                origen:        'web-cliente'
+            };
+
+            // Timeout de 15s por si el webhook no responde
+            const controller = new AbortController();
+            const timeoutId  = setTimeout(() => controller.abort(), 15000);
+
+            try {
+                const res = await fetch(WEBHOOK_URL, {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify(payload),
+                    signal:  controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                // Make devuelve 200 (a veces con body "Accepted")
+                if (!res.ok) {
+                    throw new Error('HTTP ' + res.status);
+                }
+
+                // ✅ Éxito
+                const successMsg = {
+                    'cuenta': 'Tu cuenta está siendo preparada. En breve el mesero te la llevará.',
+                    'opcion': 'Tu mesero ya fue notificado y va en camino.',
+                    'otra':   'Tu mesero ya fue notificado y va en camino.'
+                };
+                document.getElementById('sentDetail').innerHTML =
+                    `<strong>Mesa ${escapeHtml(table)}</strong> · ${escapeHtml(req)}<br>` +
+                    `<span style="font-size: 12.5px;">${successMsg[tipo] || successMsg.opcion}</span>`;
+
+                showWaiterView('sent');
+            } catch (err) {
+                clearTimeout(timeoutId);
+                console.error('[Waiter webhook error]', err);
+
+                let msg;
+                if (err.name === 'AbortError') {
+                    msg = 'El servidor tardó demasiado en responder. Revisa tu conexión e intenta de nuevo.';
+                } else if (err instanceof TypeError && /fetch/i.test(err.message)) {
+                    // Suele ser CORS o falta de red
+                    msg = 'No pudimos conectar con el servidor. Revisa tu conexión a internet e intenta de nuevo.';
+                } else {
+                    msg = 'No pudimos enviar tu solicitud. Intenta de nuevo en un momento.';
+                }
+                showError(msg);
+            } finally {
+                isSendingRequest = false;
+                setWaiterButtonsDisabled(false);
+            }
+        }
+
+        function showError(msg) {
+            document.getElementById('errorDetail').textContent = msg;
+            showWaiterView('error');
+        }
+
+        function setWaiterButtonsDisabled(disabled) {
+            document.querySelectorAll('#waiterGrid .waiter-opt').forEach(b => { b.disabled = disabled; });
+            document.querySelectorAll('#waiterOther button').forEach(b => { b.disabled = disabled; });
+        }
+
+        /* ═══════════════════════════════════════════════════════════
            RULETA DE PREMIOS
            ═══════════════════════════════════════════════════════════ */
-
         const PRIZES = [
             { lines: ['Consomé', 'individual'],   name: 'Consomé individual' },
             { lines: ['Nopales', 'individuales'], name: 'Nopales individuales' },
@@ -1101,15 +1731,6 @@
                 try { localStorage.setItem(LS_PENDING, 'true'); } catch (e) {}
             });
         });
-
-        function todayStr() {
-            const d = new Date();
-            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-        }
-
-        function getLS(key)   { try { return localStorage.getItem(key); } catch (e) { return null; } }
-        function setLS(k, v)  { try { localStorage.setItem(k, v); }       catch (e) {} }
-        function removeLS(k)  { try { localStorage.removeItem(k); }       catch (e) {} }
 
         let rouletteShownThisSession = false;
 
@@ -1230,17 +1851,9 @@
             }
         }
 
-        /* ── Cierre de la ruleta con confirmación ── */
         function requestCloseRoulette() {
-            // Ignorar intentos de cierre mientras la ruleta está girando
             if (isSpinning) return;
-
-            // Si aún no ha girado, pedir confirmación
-            if (!hasSpun) {
-                showExitConfirm();
-                return;
-            }
-
+            if (!hasSpun) { showExitConfirm(); return; }
             closeRoulette();
         }
 
@@ -1266,10 +1879,7 @@
 
         function confirmExit() {
             hideExitConfirm();
-            // Marcar el día como usado para que no pueda reintentar recargando la página
-            if (!hasSpun) {
-                setLS(LS_LAST_DATE, todayStr());
-            }
+            if (!hasSpun) setLS(LS_LAST_DATE, todayStr());
             closeRoulette();
         }
 
@@ -1283,7 +1893,6 @@
             }
         }
 
-        /* ── Giro de la ruleta ── */
         function spinWheel() {
             if (isSpinning || hasSpun) return;
             isSpinning = true;
@@ -1333,13 +1942,12 @@
 
         function onSpinComplete(winIndex) {
             const prize = PRIZES[winIndex].name;
-            const day   = new Date().getDay(); // 0 = domingo, 6 = sábado
+            const day   = new Date().getDay();
 
             setLS(LS_LAST_DATE, todayStr());
             setLS(LS_LAST_PRIZE, prize);
             removeLS(LS_PENDING);
 
-            // Mensaje dinámico según el día
             let nextSpinText;
             if (day === 0) {
                 nextSpinText = 'Tu próxima oportunidad será el sábado.';
