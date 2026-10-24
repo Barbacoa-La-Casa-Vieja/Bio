@@ -182,18 +182,19 @@
             outline-offset: 2px;
         }
 
-        .btn:active {
+        .btn:active:not(:disabled) {
             transform: scale(0.985);
         }
 
         .btn:disabled {
             cursor: not-allowed;
-            opacity: 0.6;
+            opacity: 0.5;
         }
 
         .btn-primary {
             background: var(--color-ink-soft);
             color: var(--color-paper);
+            justify-content: center;
         }
 
         .btn-primary:hover:not(:disabled) {
@@ -397,7 +398,7 @@
             transform: translateY(-1px);
         }
 
-        /* ── Modales ── */
+        /* ── Modales base ── */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -477,7 +478,7 @@
             align-items: center;
             justify-content: center;
             transition: background 0.15s ease;
-            z-index: 2;
+            z-index: 5;
         }
 
         .modal-close:hover {
@@ -520,6 +521,7 @@
             gap: var(--spacing-2);
         }
 
+        /* ── Playlist ── */
         .playlist-btn {
             display: flex;
             align-items: center;
@@ -582,7 +584,40 @@
         /* ── Modal Llamar Mesero ── */
         .waiter-modal {
             max-height: 90dvh;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .waiter-scroll-area {
+            flex: 1;
             overflow-y: auto;
+            padding: var(--spacing-8) var(--spacing-5) var(--spacing-2);
+            min-height: 0;
+        }
+
+        .waiter-footer {
+            flex-shrink: 0;
+            padding: var(--spacing-3) var(--spacing-5) var(--spacing-5);
+            background: var(--color-paper);
+            border-top: 1px solid var(--color-hairline);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-2);
+        }
+
+        .selection-count {
+            font-size: 12.5px;
+            color: var(--color-mid-gray);
+            font-weight: 500;
+            text-align: center;
+            margin: 0;
+            transition: color 0.15s ease;
+        }
+
+        .selection-count.has-selection {
+            color: var(--color-ink);
         }
 
         .table-field {
@@ -635,6 +670,10 @@
             font-size: 14px;
         }
 
+        .table-input:disabled {
+            opacity: 0.6;
+        }
+
         .table-field.shake {
             animation: shake 0.45s ease;
             border-color: var(--color-ember);
@@ -653,6 +692,7 @@
         }
 
         .waiter-opt {
+            position: relative;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -666,31 +706,63 @@
             color: var(--color-ink);
             cursor: pointer;
             text-align: left;
-            transition: background 0.15s, border-color 0.15s, transform 0.1s;
+            transition: background 0.15s, border-color 0.15s, transform 0.1s, color 0.15s;
             -webkit-tap-highlight-color: transparent;
             min-height: 48px;
+            outline: none;
         }
 
-        .waiter-opt:hover {
+        .waiter-opt:hover:not(:disabled) {
             background: var(--color-surface-alt);
             border-color: var(--color-hairline);
         }
 
-        .waiter-opt:active {
+        .waiter-opt:active:not(:disabled) {
             transform: scale(0.97);
+        }
+
+        .waiter-opt:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .waiter-opt:focus-visible {
+            outline: 2px solid var(--color-ink);
+            outline-offset: 2px;
         }
 
         .waiter-opt-wide {
             grid-column: 1 / -1;
         }
 
-        .waiter-opt-primary {
+        .waiter-opt.selected {
             background: var(--color-ink-soft);
             color: var(--color-paper);
+            border-color: var(--color-ink-soft);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
         }
 
-        .waiter-opt-primary:hover {
+        .waiter-opt.selected:hover:not(:disabled) {
             background: var(--color-ink);
+            border-color: var(--color-ink);
+        }
+
+        .waiter-opt.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 9px;
+            font-weight: 700;
+            background: var(--color-paper);
+            color: var(--color-ink);
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         }
 
         .opt-icon {
@@ -705,64 +777,10 @@
             line-height: 1.25;
         }
 
-        /* Vista "otra solicitud" */
-        .other-table-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 14px;
-            border-radius: var(--radius-2xl);
-            background: var(--color-canvas);
-            border: 1px solid var(--color-hairline);
-            margin-bottom: var(--spacing-3);
-            font-size: 13px;
-            color: var(--color-mid-gray);
-        }
-
-        .other-table-bar strong {
-            color: var(--color-ink);
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .other-textarea {
-            width: 100%;
-            min-height: 110px;
-            border: 1px solid var(--color-hairline);
-            border-radius: var(--radius-2xl);
-            padding: 12px 14px;
-            font-family: var(--font-geist);
-            font-size: 14px;
-            color: var(--color-ink);
-            resize: vertical;
-            background: var(--color-canvas);
-            outline: none;
-            margin-bottom: var(--spacing-3);
-            transition: border-color 0.15s ease;
-        }
-
-        .other-textarea:focus {
-            border-color: var(--color-ink);
-        }
-
-        .other-textarea::placeholder {
-            color: var(--color-mid-gray);
-        }
-
-        .other-actions {
-            display: flex;
-            gap: var(--spacing-2);
-        }
-
-        .other-actions .btn {
-            justify-content: center;
-            flex: 1;
-        }
-
-        /* Vista "enviado" */
+        /* Vista "enviado" / error */
         .sent-view {
             text-align: center;
-            padding: var(--spacing-2) 0 var(--spacing-1);
+            padding: var(--spacing-2) 0 var(--spacing-4);
         }
 
         .sent-icon {
@@ -781,7 +799,7 @@
             font-size: 18px;
             font-weight: 600;
             color: var(--color-ink);
-            margin-bottom: var(--spacing-2);
+            margin-bottom: var(--spacing-3);
         }
 
         .sent-view p {
@@ -797,9 +815,52 @@
             font-weight: 600;
         }
 
+        .sent-meta {
+            font-size: 11px;
+            color: var(--color-mid-gray);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .sent-list {
+            background: var(--color-canvas);
+            border-radius: var(--radius-2xl);
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .sent-list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 3px 0;
+            font-size: 13px;
+            color: var(--color-ink);
+            line-height: 1.35;
+        }
+
+        .sent-list-item .dot {
+            color: var(--color-mid-gray);
+            font-size: 7px;
+            line-height: 1.9;
+            flex-shrink: 0;
+        }
+
+        .sent-note {
+            font-size: 12.5px;
+            color: var(--color-mid-gray);
+            line-height: 1.4;
+            text-align: center;
+        }
+
         .sent-actions {
             display: flex;
             gap: var(--spacing-2);
+            margin-top: var(--spacing-4);
         }
 
         .sent-actions .btn {
@@ -1111,7 +1172,6 @@
 <body>
 
     <main class="container">
-        <!-- Logo -->
         <div class="logo-wrap">
             <div class="logo-inner">
                 <img
@@ -1124,81 +1184,50 @@
             </div>
         </div>
 
-        <!-- Título -->
         <div class="title-block">
             <h1>Barbacoa<br /><em>de la Casa Vieja</em></h1>
             <p class="title-tagline">Tradición en cada bocado</p>
         </div>
 
-        <!-- Divisor -->
         <div class="divider" aria-hidden="true"></div>
 
-        <!-- Botones -->
         <nav class="btn-group" aria-label="Acciones principales">
-            <button
-                class="btn btn-primary"
-                onclick="openWaiter()"
-                type="button"
-            >
+            <button class="btn btn-primary" onclick="openWaiter()" type="button">
                 <span class="btn-icon">🔔</span>
                 <span class="btn-label">Llamar al mesero</span>
                 <span class="btn-arrow">→</span>
             </button>
 
-            <a
-                href="https://Barbacoa-La-Casa-Vieja.github.io/Men-"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn btn-outline"
-            >
+            <a href="https://Barbacoa-La-Casa-Vieja.github.io/Men-" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
                 <span class="btn-icon">🛵</span>
                 <span class="btn-label">Pedir a domicilio</span>
                 <span class="btn-arrow">↗</span>
             </a>
 
-            <a
-                href="https://tally.so/r/yPDV1x"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn btn-outline"
-                data-rating
-            >
+            <a href="https://tally.so/r/yPDV1x" target="_blank" rel="noopener noreferrer" class="btn btn-outline" data-rating>
                 <span class="btn-icon">⭐</span>
                 <span class="btn-label">Califícanos</span>
                 <span class="btn-badge">🎁 Gana</span>
             </a>
 
-            <a
-                href="https://tally.so/r/5B2WVE"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn btn-outline"
-                data-rating
-            >
+            <a href="https://tally.so/r/5B2WVE" target="_blank" rel="noopener noreferrer" class="btn btn-outline" data-rating>
                 <span class="btn-icon">👨‍🍳</span>
                 <span class="btn-label">Califica a tu mesero</span>
                 <span class="btn-arrow">↗</span>
             </a>
 
-            <button
-                class="btn btn-ghost"
-                onclick="openModal()"
-                type="button"
-            >
+            <button class="btn btn-ghost" onclick="openModal()" type="button">
                 <span class="btn-icon">🎵</span>
                 <span class="btn-label">Nuestras playlists en Spotify</span>
                 <span class="btn-arrow">↗</span>
             </button>
         </nav>
 
-        <!-- Divisor -->
         <div class="divider" aria-hidden="true"></div>
 
-        <!-- Footer -->
         <p class="footer">© 2026 Barbacoa de la Casa Vieja</p>
     </main>
 
-    <!-- Banner inferior -->
     <div class="bottom-banner" id="bottomBanner">
         <div class="banner-content">
             <span>🧂</span>
@@ -1207,26 +1236,13 @@
                 Encuéntrala en <strong>Gran Mitla</strong>
             </span>
         </div>
-        <a
-            href="https://cronos6xlab.github.io/Barbacoa-La_Casa_Vieja/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="banner-cta"
-        >
+        <a href="https://cronos6xlab.github.io/Barbacoa-La_Casa_Vieja/" target="_blank" rel="noopener noreferrer" class="banner-cta">
             Ver más ↗
         </a>
         <button class="banner-close" onclick="closeBanner()" type="button" aria-label="Cerrar banner">✕</button>
     </div>
 
-    <!-- FAB -->
-    <a
-        href="https://cronos6xlab.github.io/Barbacoa-La_Casa_Vieja/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="fab"
-        id="fabMitla"
-        aria-label="Gran Mitla"
-    >
+    <a href="https://cronos6xlab.github.io/Barbacoa-La_Casa_Vieja/" target="_blank" rel="noopener noreferrer" class="fab" id="fabMitla" aria-label="Gran Mitla">
         🧂 Gran Mitla
     </a>
 
@@ -1243,12 +1259,7 @@
             </div>
 
             <div class="modal-btns">
-                <a
-                    href="https://open.spotify.com/playlist/3H1RUHkF9ZYRVuBELbVIcE?si=QI3nHnm9RQi-Q79Gew6zPw&pi=TmERreIZSSe3e"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="playlist-btn"
-                >
+                <a href="https://open.spotify.com/playlist/3H1RUHkF9ZYRVuBELbVIcE?si=QI3nHnm9RQi-Q79Gew6zPw&pi=TmERreIZSSe3e" target="_blank" rel="noopener noreferrer" class="playlist-btn">
                     <div class="playlist-num">🎸</div>
                     <div class="playlist-info">
                         <div class="playlist-label">Lista 1</div>
@@ -1257,12 +1268,7 @@
                     <span class="playlist-arrow">→</span>
                 </a>
 
-                <a
-                    href="https://open.spotify.com/playlist/3bkERjsiZIIOGH1NerBhb4?si=OlPoxRK7Tcq7JXXN4nebYQ&pi=q4iRgAlcQhihE"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="playlist-btn"
-                >
+                <a href="https://open.spotify.com/playlist/3bkERjsiZIIOGH1NerBhb4?si=OlPoxRK7Tcq7JXXN4nebYQ&pi=q4iRgAlcQhihE" target="_blank" rel="noopener noreferrer" class="playlist-btn">
                     <div class="playlist-num">🎺</div>
                     <div class="playlist-info">
                         <div class="playlist-label">Lista 2</div>
@@ -1280,124 +1286,111 @@
             <div class="modal-handle" aria-hidden="true"></div>
             <button class="modal-close" onclick="closeWaiter()" type="button" aria-label="Cerrar">✕</button>
 
-            <div class="modal-header">
-                <div class="modal-icon-wrap">🔔</div>
-                <h2 id="waiterTitle">Llamar al mesero</h2>
-                <p>¿Qué necesitas?</p>
-            </div>
+            <div class="waiter-scroll-area">
+                <div class="modal-header">
+                    <div class="modal-icon-wrap">🔔</div>
+                    <h2 id="waiterTitle">Llamar al mesero</h2>
+                    <p>Selecciona todo lo que necesites</p>
+                </div>
 
-            <!-- Vista principal -->
-            <div id="waiterMain">
-                <label class="table-field" id="tableField" for="tableNumber">
-                    <span class="table-label">Mesa N.º</span>
-                    <input
-                        type="number"
-                        id="tableNumber"
-                        class="table-input"
-                        inputmode="numeric"
-                        min="1"
-                        max="999"
-                        placeholder="Ej. 5"
-                        autocomplete="off"
-                    />
-                </label>
+                <!-- Vista principal -->
+                <div id="waiterMain">
+                    <label class="table-field" id="tableField" for="tableNumber">
+                        <span class="table-label">Mesa N.º</span>
+                        <input
+                            type="number"
+                            id="tableNumber"
+                            class="table-input"
+                            inputmode="numeric"
+                            min="1"
+                            max="999"
+                            placeholder="Ej. 5"
+                            autocomplete="off"
+                        />
+                    </label>
 
-                <div class="waiter-grid" id="waiterGrid">
-                    <button class="waiter-opt" data-req="Tortillas" type="button">
-                        <span class="opt-icon">🫓</span>
-                        <span class="opt-label">Tortillas</span>
-                    </button>
-                    <button class="waiter-opt" data-req="Salsa verde" type="button">
-                        <span class="opt-icon">🥑</span>
-                        <span class="opt-label">Salsa verde</span>
-                    </button>
-                    <button class="waiter-opt" data-req="Salsa roja de la casa" type="button">
-                        <span class="opt-icon">🌶️</span>
-                        <span class="opt-label">Roja de la casa</span>
-                    </button>
-                    <button class="waiter-opt" data-req="Salsa borracha" type="button">
-                        <span class="opt-icon">🍶</span>
-                        <span class="opt-label">Salsa borracha</span>
-                    </button>
-                    <button class="waiter-opt" data-req="Limones" type="button">
-                        <span class="opt-icon">🍋</span>
-                        <span class="opt-label">Limones</span>
-                    </button>
-                    <button class="waiter-opt" data-req="Cebolla" type="button">
-                        <span class="opt-icon">🧅</span>
-                        <span class="opt-label">Cebolla</span>
-                    </button>
-                    <button class="waiter-opt" data-req="Cilantro" type="button">
-                        <span class="opt-icon">🌿</span>
-                        <span class="opt-label">Cilantro</span>
-                    </button>
-                    <button class="waiter-opt" data-req="Servilletas" type="button">
-                        <span class="opt-icon">🧻</span>
-                        <span class="opt-label">Servilletas</span>
-                    </button>
+                    <div class="waiter-grid" id="waiterGrid">
+                        <button class="waiter-opt" data-req="Tortillas" type="button">
+                            <span class="opt-icon">🫓</span>
+                            <span class="opt-label">Tortillas</span>
+                        </button>
+                        <button class="waiter-opt" data-req="Salsa verde" type="button">
+                            <span class="opt-icon">🥑</span>
+                            <span class="opt-label">Salsa verde</span>
+                        </button>
+                        <button class="waiter-opt" data-req="Salsa roja de la casa" type="button">
+                            <span class="opt-icon">🌶️</span>
+                            <span class="opt-label">Roja de la casa</span>
+                        </button>
+                        <button class="waiter-opt" data-req="Salsa borracha" type="button">
+                            <span class="opt-icon">🍶</span>
+                            <span class="opt-label">Salsa borracha</span>
+                        </button>
+                        <button class="waiter-opt" data-req="Limones" type="button">
+                            <span class="opt-icon">🍋</span>
+                            <span class="opt-label">Limones</span>
+                        </button>
+                        <button class="waiter-opt" data-req="Cebolla" type="button">
+                            <span class="opt-icon">🧅</span>
+                            <span class="opt-label">Cebolla</span>
+                        </button>
+                        <button class="waiter-opt" data-req="Cilantro" type="button">
+                            <span class="opt-icon">🌿</span>
+                            <span class="opt-label">Cilantro</span>
+                        </button>
+                        <button class="waiter-opt" data-req="Servilletas" type="button">
+                            <span class="opt-icon">🧻</span>
+                            <span class="opt-label">Servilletas</span>
+                        </button>
 
-                    <button class="waiter-opt waiter-opt-wide" data-action="other" type="button">
-                        <span class="opt-icon">📝</span>
-                        <span class="opt-label">Otra solicitud</span>
-                    </button>
+                        <button class="waiter-opt waiter-opt-wide" data-req="Otra solicitud" data-tipo="otra" type="button">
+                            <span class="opt-icon">📝</span>
+                            <span class="opt-label">Otra solicitud</span>
+                        </button>
 
-                    <button
-                        class="waiter-opt waiter-opt-wide waiter-opt-primary"
-                        data-req="Pedir la cuenta"
-                        data-tipo="cuenta"
-                        type="button"
-                    >
-                        <span class="opt-icon">🧾</span>
-                        <span class="opt-label">Pedir la cuenta</span>
-                    </button>
+                        <button class="waiter-opt waiter-opt-wide" data-req="Pedir la cuenta" data-tipo="cuenta" type="button">
+                            <span class="opt-icon">🧾</span>
+                            <span class="opt-label">Pedir la cuenta</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vista "enviando" -->
+                <div id="waiterLoading" class="sent-view" style="display: none;">
+                    <div class="loading-spinner" aria-hidden="true"></div>
+                    <h3>Enviando solicitud...</h3>
+                    <p>Un momento por favor</p>
+                </div>
+
+                <!-- Vista "enviado" -->
+                <div id="waiterSent" class="sent-view" style="display: none;">
+                    <div class="sent-icon">✅</div>
+                    <h3>¡Solicitud enviada!</h3>
+                    <p id="sentDetail"></p>
+                    <div class="sent-actions">
+                        <button class="btn btn-outline" onclick="backToOptions()" type="button">Otra solicitud</button>
+                        <button class="btn btn-primary" onclick="closeWaiter()" type="button">Listo</button>
+                    </div>
+                </div>
+
+                <!-- Vista "error" -->
+                <div id="waiterError" class="sent-view" style="display: none;">
+                    <div class="sent-icon" style="color: var(--color-ember);">⚠️</div>
+                    <h3>No se pudo enviar</h3>
+                    <p id="errorDetail">Revisa tu conexión a internet e intenta de nuevo.</p>
+                    <div class="sent-actions">
+                        <button class="btn btn-outline" onclick="backToOptions()" type="button">Volver</button>
+                        <button class="btn btn-primary" onclick="retrySend()" type="button">Reintentar</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Vista "otra solicitud" -->
-            <div id="waiterOther" style="display: none;">
-                <div class="other-table-bar">
-                    <span>📋 Solicitud para</span>
-                    <strong id="otherTableDisplay">Mesa —</strong>
-                </div>
-                <textarea
-                    id="otherText"
-                    class="other-textarea"
-                    placeholder="Ej. Necesitamos una silla extra, más agua, etc."
-                    maxlength="240"
-                ></textarea>
-                <div class="other-actions">
-                    <button class="btn btn-outline" onclick="backToOptions()" type="button">Volver</button>
-                    <button class="btn btn-primary" onclick="sendOther()" type="button">Enviar</button>
-                </div>
-            </div>
-
-            <!-- Vista "enviando" -->
-            <div id="waiterLoading" class="sent-view" style="display: none;">
-                <div class="loading-spinner" aria-hidden="true"></div>
-                <h3>Enviando solicitud...</h3>
-                <p>Un momento por favor</p>
-            </div>
-
-            <!-- Vista "enviado" -->
-            <div id="waiterSent" class="sent-view" style="display: none;">
-                <div class="sent-icon">✅</div>
-                <h3>¡Solicitud enviada!</h3>
-                <p id="sentDetail"></p>
-                <div class="sent-actions">
-                    <button class="btn btn-outline" onclick="backToOptions()" type="button">Otra solicitud</button>
-                    <button class="btn btn-primary" onclick="closeWaiter()" type="button">Listo</button>
-                </div>
-            </div>
-
-            <!-- Vista "error" -->
-            <div id="waiterError" class="sent-view" style="display: none;">
-                <div class="sent-icon" style="color: var(--color-ember);">⚠️</div>
-                <h3>No se pudo enviar</h3>
-                <p id="errorDetail">Revisa tu conexión a internet e intenta de nuevo.</p>
-                <div class="sent-actions">
-                    <button class="btn btn-outline" onclick="backToOptions()" type="button">Volver</button>
-                    <button class="btn btn-primary" onclick="retrySend()" type="button">Reintentar</button>
-                </div>
+            <!-- Footer fijo con botón de enviar -->
+            <div class="waiter-footer" id="waiterFooter">
+                <p class="selection-count" id="selectionCount">Selecciona al menos una opción</p>
+                <button class="btn btn-primary" id="sendBtn" type="button" disabled onclick="sendSelection()">
+                    Enviar solicitud
+                </button>
             </div>
         </div>
     </div>
@@ -1420,7 +1413,6 @@
         </div>
     </div>
 
-    <!-- Confirmación de salida sin girar -->
     <div class="confirm-overlay" id="confirmOverlay" onclick="closeConfirmOnOverlay(event)">
         <div class="confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
             <div class="confirm-icon">🎁</div>
@@ -1450,7 +1442,7 @@
            ══════════════════════════════════════════════════════════════ */
         const WEBHOOK_URL = 'https://hook.us1.make.com/REEMPLAZA_ESTO_CON_TU_URL_DE_MAKE';
 
-        // ── Helpers de almacenamiento ──
+        // ── Helpers ──
         function getLS(key)   { try { return localStorage.getItem(key); } catch (e) { return null; } }
         function setLS(k, v)  { try { localStorage.setItem(k, v); }       catch (e) {} }
         function removeLS(k)  { try { localStorage.removeItem(k); }       catch (e) {} }
@@ -1478,9 +1470,7 @@
         }
 
         function closeOnOverlay(e) {
-            if (e.target === document.getElementById('spotifyModal')) {
-                closeModal();
-            }
+            if (e.target === document.getElementById('spotifyModal')) closeModal();
         }
 
         // ── Tecla Escape ──
@@ -1489,7 +1479,6 @@
             if (document.getElementById('confirmOverlay').classList.contains('active')) {
                 cancelExit();
             } else if (document.getElementById('waiterOverlay').classList.contains('active')) {
-                // No cerrar mientras se está enviando
                 if (!isSendingRequest) closeWaiter();
             } else if (document.getElementById('rouletteOverlay').classList.contains('active')) {
                 requestCloseRoulette();
@@ -1514,12 +1503,12 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-           LLAMAR AL MESERO  →  WEBHOOK DE MAKE
+           LLAMAR AL MESERO  →  WEBHOOK DE MAKE  (SELECCIÓN MÚLTIPLE)
            ═══════════════════════════════════════════════════════════ */
         const LS_TABLE = 'cv_tableNumber';
 
         let isSendingRequest = false;
-        let lastAttempt      = null;   // { table, req, tipo }
+        let lastAttempt      = null;
 
         function openWaiter() {
             const overlay = document.getElementById('waiterOverlay');
@@ -1529,11 +1518,12 @@
             const saved = getLS(LS_TABLE);
             document.getElementById('tableNumber').value = saved || '';
 
+            clearSelections();
             showWaiterView('main');
         }
 
         function closeWaiter() {
-            if (isSendingRequest) return; // no cerrar a media petición
+            if (isSendingRequest) return;
             document.getElementById('waiterOverlay').classList.remove('active');
             document.body.style.overflow = '';
         }
@@ -1544,16 +1534,53 @@
 
         function showWaiterView(view) {
             document.getElementById('waiterMain').style.display    = view === 'main'    ? '' : 'none';
-            document.getElementById('waiterOther').style.display   = view === 'other'   ? '' : 'none';
             document.getElementById('waiterLoading').style.display = view === 'loading' ? '' : 'none';
             document.getElementById('waiterSent').style.display    = view === 'sent'    ? '' : 'none';
             document.getElementById('waiterError').style.display   = view === 'error'   ? '' : 'none';
+            document.getElementById('waiterFooter').style.display  = view === 'main'    ? '' : 'none';
+        }
 
-            if (view === 'other') {
-                document.getElementById('otherText').value = '';
-                setTimeout(() => document.getElementById('otherText').focus(), 60);
+        function clearSelections() {
+            document.querySelectorAll('#waiterGrid .waiter-opt.selected')
+                .forEach(b => b.classList.remove('selected'));
+            updateSendButton();
+        }
+
+        function updateSendButton() {
+            const count = document.querySelectorAll('#waiterGrid .waiter-opt.selected').length;
+            const sendBtn = document.getElementById('sendBtn');
+            const countEl = document.getElementById('selectionCount');
+
+            if (count === 0) {
+                countEl.textContent = 'Selecciona al menos una opción';
+                countEl.classList.remove('has-selection');
+                sendBtn.disabled = true;
+            } else if (count === 1) {
+                countEl.textContent = '1 solicitud seleccionada';
+                countEl.classList.add('has-selection');
+                sendBtn.disabled = false;
+            } else {
+                countEl.textContent = `${count} solicitudes seleccionadas`;
+                countEl.classList.add('has-selection');
+                sendBtn.disabled = false;
             }
         }
+
+        function getSelectedItems() {
+            return Array.from(document.querySelectorAll('#waiterGrid .waiter-opt.selected'))
+                .map(btn => ({
+                    label: btn.dataset.req,
+                    tipo:  btn.dataset.tipo || 'opcion'
+                }));
+        }
+
+        // Toggle de selección
+        document.getElementById('waiterGrid').addEventListener('click', (e) => {
+            const btn = e.target.closest('.waiter-opt');
+            if (!btn || btn.disabled) return;
+            btn.classList.toggle('selected');
+            updateSendButton();
+        });
 
         function getTableNumber() {
             return document.getElementById('tableNumber').value.trim();
@@ -1575,56 +1602,43 @@
             return String(n);
         }
 
-        // Delegación de eventos en la rejilla de opciones
-        document.getElementById('waiterGrid').addEventListener('click', (e) => {
-            const btn = e.target.closest('.waiter-opt');
-            if (!btn) return;
+        async function sendSelection() {
+            const items = getSelectedItems();
+            if (items.length === 0) return;
 
-            if (btn.dataset.action === 'other') {
-                openOtherView();
-            } else if (btn.dataset.req) {
-                const table = requireTable();
-                if (!table) return;
-                const tipo = btn.dataset.tipo || 'opcion';
-                sendWaiterRequest(table, btn.dataset.req, tipo);
-            }
-        });
-
-        function openOtherView() {
             const table = requireTable();
             if (!table) return;
-            document.getElementById('otherTableDisplay').textContent = 'Mesa ' + table;
-            showWaiterView('other');
-        }
 
-        function sendOther() {
-            const txt = document.getElementById('otherText').value.trim();
-            if (!txt) {
-                document.getElementById('otherText').focus();
-                return;
-            }
-            const table = requireTable();
-            if (!table) return;
-            sendWaiterRequest(table, txt, 'otra');
+            await sendWaiterRequest(table, items);
         }
 
         function backToOptions() {
+            clearSelections();
             showWaiterView('main');
         }
 
         function retrySend() {
             if (lastAttempt) {
-                sendWaiterRequest(lastAttempt.table, lastAttempt.req, lastAttempt.tipo);
+                sendWaiterRequest(lastAttempt.table, lastAttempt.items);
             } else {
                 backToOptions();
             }
         }
 
+        function setWaiterButtonsDisabled(disabled) {
+            document.querySelectorAll('#waiterGrid .waiter-opt').forEach(b => { b.disabled = disabled; });
+            document.getElementById('tableNumber').disabled = disabled;
+            if (disabled) {
+                document.getElementById('sendBtn').disabled = true;
+            } else {
+                updateSendButton();
+            }
+        }
+
         /* ── Envío real al webhook de Make ── */
-        async function sendWaiterRequest(table, req, tipo) {
+        async function sendWaiterRequest(table, items) {
             if (isSendingRequest) return;
 
-            // Aviso si aún no se configuró la URL
             if (!WEBHOOK_URL || WEBHOOK_URL.includes('REEMPLAZA_ESTO')) {
                 console.warn('[Waiter] Falta configurar WEBHOOK_URL con tu URL de Make.');
                 showError('Falta configurar el webhook de Make. Pega tu URL en la constante WEBHOOK_URL.');
@@ -1632,17 +1646,23 @@
             }
 
             isSendingRequest = true;
-            lastAttempt = { table, req, tipo };
+            lastAttempt = { table, items };
 
-            // Bloquea botones mientras se envía
             setWaiterButtonsDisabled(true);
             showWaiterView('loading');
 
             const now = new Date();
+            const labels = items.map(i => i.label);
+            const tipos  = items.map(i => i.tipo);
+
             const payload = {
                 mesa:          table,
-                solicitud:     req,
-                tipo:          tipo, // 'opcion' | 'otra' | 'cuenta'
+                solicitudes:   labels,               // array (para iterar en Make)
+                pedido:        labels.join(', '),    // string legible (para WhatsApp/Slack)
+                cantidad:      labels.length,
+                tipos:         tipos,
+                incluye_cuenta: tipos.includes('cuenta'),
+                incluye_otra:   tipos.includes('otra'),
                 restaurante:   'Barbacoa de la Casa Vieja',
                 fecha:         now.toISOString(),
                 fecha_local:   now.toLocaleString('es-MX', { timeZone: 'America/Mexico_City' }),
@@ -1651,7 +1671,6 @@
                 origen:        'web-cliente'
             };
 
-            // Timeout de 15s por si el webhook no responde
             const controller = new AbortController();
             const timeoutId  = setTimeout(() => controller.abort(), 15000);
 
@@ -1664,21 +1683,9 @@
                 });
                 clearTimeout(timeoutId);
 
-                // Make devuelve 200 (a veces con body "Accepted")
-                if (!res.ok) {
-                    throw new Error('HTTP ' + res.status);
-                }
+                if (!res.ok) throw new Error('HTTP ' + res.status);
 
-                // ✅ Éxito
-                const successMsg = {
-                    'cuenta': 'Tu cuenta está siendo preparada. En breve el mesero te la llevará.',
-                    'opcion': 'Tu mesero ya fue notificado y va en camino.',
-                    'otra':   'Tu mesero ya fue notificado y va en camino.'
-                };
-                document.getElementById('sentDetail').innerHTML =
-                    `<strong>Mesa ${escapeHtml(table)}</strong> · ${escapeHtml(req)}<br>` +
-                    `<span style="font-size: 12.5px;">${successMsg[tipo] || successMsg.opcion}</span>`;
-
+                renderSentView(table, items);
                 showWaiterView('sent');
             } catch (err) {
                 clearTimeout(timeoutId);
@@ -1688,7 +1695,6 @@
                 if (err.name === 'AbortError') {
                     msg = 'El servidor tardó demasiado en responder. Revisa tu conexión e intenta de nuevo.';
                 } else if (err instanceof TypeError && /fetch/i.test(err.message)) {
-                    // Suele ser CORS o falta de red
                     msg = 'No pudimos conectar con el servidor. Revisa tu conexión a internet e intenta de nuevo.';
                 } else {
                     msg = 'No pudimos enviar tu solicitud. Intenta de nuevo en un momento.';
@@ -1700,14 +1706,36 @@
             }
         }
 
+        function renderSentView(table, items) {
+            const hasCuenta = items.some(i => i.tipo === 'cuenta');
+            const hasOtra   = items.some(i => i.tipo === 'otra');
+            const onlyCuenta = items.length === 1 && hasCuenta;
+            const onlyOtra   = items.length === 1 && hasOtra;
+
+            let note = 'Tu mesero ya fue notificado y va en camino.';
+            if (onlyCuenta)          note = 'Tu cuenta está siendo preparada. En breve te la llevarán.';
+            else if (onlyOtra)       note = 'Tu mesero pasará a tu mesa para tomar tu solicitud.';
+            else if (hasCuenta && hasOtra) note = 'Tu mesero viene con tu cuenta y para tomar tu solicitud.';
+            else if (hasCuenta)      note = 'Tu mesero ya viene con lo que pediste y tu cuenta.';
+            else if (hasOtra)        note = 'Tu mesero ya viene con lo que pediste y para tomar tu solicitud.';
+
+            const listHtml = items.map(i =>
+                `<div class="sent-list-item">
+                    <span class="dot">●</span>
+                    <span>${escapeHtml(i.label)}</span>
+                </div>`
+            ).join('');
+
+            document.getElementById('sentDetail').innerHTML = `
+                <div class="sent-meta">Mesa ${escapeHtml(table)} · ${items.length} solicitud${items.length !== 1 ? 'es' : ''}</div>
+                <div class="sent-list">${listHtml}</div>
+                <div class="sent-note">${note}</div>
+            `;
+        }
+
         function showError(msg) {
             document.getElementById('errorDetail').textContent = msg;
             showWaiterView('error');
-        }
-
-        function setWaiterButtonsDisabled(disabled) {
-            document.querySelectorAll('#waiterGrid .waiter-opt').forEach(b => { b.disabled = disabled; });
-            document.querySelectorAll('#waiterOther button').forEach(b => { b.disabled = disabled; });
         }
 
         /* ═══════════════════════════════════════════════════════════
@@ -1756,9 +1784,7 @@
         window.addEventListener('load', checkPendingSpin);
 
         document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') {
-                setTimeout(checkPendingSpin, 350);
-            }
+            if (document.visibilityState === 'visible') setTimeout(checkPendingSpin, 350);
         });
 
         window.addEventListener('focus', () => setTimeout(checkPendingSpin, 350));
@@ -1864,18 +1890,11 @@
         }
 
         function closeRouletteOnOverlay(e) {
-            if (e.target === document.getElementById('rouletteOverlay')) {
-                requestCloseRoulette();
-            }
+            if (e.target === document.getElementById('rouletteOverlay')) requestCloseRoulette();
         }
 
-        function showExitConfirm() {
-            document.getElementById('confirmOverlay').classList.add('active');
-        }
-
-        function hideExitConfirm() {
-            document.getElementById('confirmOverlay').classList.remove('active');
-        }
+        function showExitConfirm() { document.getElementById('confirmOverlay').classList.add('active'); }
+        function hideExitConfirm() { document.getElementById('confirmOverlay').classList.remove('active'); }
 
         function confirmExit() {
             hideExitConfirm();
@@ -1883,14 +1902,10 @@
             closeRoulette();
         }
 
-        function cancelExit() {
-            hideExitConfirm();
-        }
+        function cancelExit() { hideExitConfirm(); }
 
         function closeConfirmOnOverlay(e) {
-            if (e.target === document.getElementById('confirmOverlay')) {
-                cancelExit();
-            }
+            if (e.target === document.getElementById('confirmOverlay')) cancelExit();
         }
 
         function spinWheel() {
@@ -1949,13 +1964,9 @@
             removeLS(LS_PENDING);
 
             let nextSpinText;
-            if (day === 0) {
-                nextSpinText = 'Tu próxima oportunidad será el sábado.';
-            } else if (day === 6) {
-                nextSpinText = 'Podrás volver a girar mañana domingo.';
-            } else {
-                nextSpinText = 'Podrás volver a girar el próximo sábado.';
-            }
+            if (day === 0)      nextSpinText = 'Tu próxima oportunidad será el sábado.';
+            else if (day === 6) nextSpinText = 'Podrás volver a girar mañana domingo.';
+            else                nextSpinText = 'Podrás volver a girar el próximo sábado.';
 
             const result = document.getElementById('rouletteResult');
             result.innerHTML = `
