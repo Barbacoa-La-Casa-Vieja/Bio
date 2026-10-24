@@ -442,13 +442,13 @@
             color: var(--color-ink);
             width: 28px;
             height: 28px;
-            border-radius: 50%;
+            background border-radius: 50%;
             font-size: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.15s ease;
+            transition: 0.15s ease;
             z-index: 2;
         }
 
@@ -735,6 +735,87 @@
             line-height: 1.4;
         }
 
+        /* ── Confirmación de salida de ruleta ── */
+        .confirm-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.6);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-4);
+        }
+
+        .confirm-overlay.active {
+            display: flex;
+        }
+
+        .confirm-modal {
+            background: var(--color-paper);
+            border: 1px solid var(--color-hairline);
+            border-radius: var(--radius-3xl);
+            padding: var(--spacing-6) var(--spacing-5);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+            animation: modal-in 0.22s ease;
+        }
+
+        .confirm-icon {
+            font-size: 34px;
+            margin-bottom: var(--spacing-2);
+            line-height: 1;
+        }
+
+        .confirm-modal h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-ink);
+            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .confirm-modal p {
+            font-size: 13px;
+            color: var(--color-mid-gray);
+            line-height: 1.5;
+            margin-bottom: var(--spacing-3);
+        }
+
+        .confirm-modal p strong {
+            color: var(--color-ink);
+            font-weight: 600;
+        }
+
+        .confirm-note {
+            background: var(--color-canvas);
+            border: 1px solid var(--color-hairline);
+            border-radius: var(--radius-2xl);
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--color-mid-gray);
+            line-height: 1.55;
+            margin-bottom: var(--spacing-4);
+            text-align: left;
+        }
+
+        .confirm-note strong {
+            color: var(--color-ink);
+        }
+
+        .confirm-btns {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-2);
+        }
+
+        .confirm-btns .btn {
+            justify-content: center;
+            text-align: center;
+        }
+
         /* ── Entrada suave ── */
         .container > * {
             opacity: 0;
@@ -915,7 +996,7 @@
     <!-- Modal Ruleta -->
     <div class="roulette-overlay" id="rouletteOverlay" onclick="closeRouletteOnOverlay(event)">
         <div class="roulette-modal" role="dialog" aria-modal="true" aria-labelledby="rouletteTitle">
-            <button class="roulette-close" onclick="closeRoulette()" type="button" aria-label="Cerrar ruleta">✕</button>
+            <button class="roulette-close" onclick="requestCloseRoulette()" type="button" aria-label="Cerrar ruleta">✕</button>
 
             <h2 class="roulette-title" id="rouletteTitle">¡Gracias por calificarnos!</h2>
             <p class="roulette-subtitle">Gira la ruleta y gana un premio de agradecimiento</p>
@@ -927,6 +1008,27 @@
             </div>
 
             <div class="roulette-result" id="rouletteResult" aria-live="polite"></div>
+        </div>
+    </div>
+
+    <!-- Confirmación de salida sin girar -->
+    <div class="confirm-overlay" id="confirmOverlay" onclick="closeConfirmOnOverlay(event)">
+        <div class="confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
+            <div class="confirm-icon">🎁</div>
+            <h3 id="confirmTitle">¿Salir sin girar?</h3>
+            <p>Aún no has girado la ruleta. Si sales ahora, <strong>perderás tu premio de hoy</strong>.</p>
+            <div class="confirm-note">
+                📅 Recuerda que abrimos solo <strong>sábados y domingos</strong>.<br>
+                Si giras el domingo, tu próxima oportunidad será el <strong>sábado siguiente</strong>.
+            </div>
+            <div class="confirm-btns">
+                <button class="btn btn-outline" onclick="confirmExit()" type="button">
+                    Sí, salir de todos modos
+                </button>
+                <button class="btn btn-primary" onclick="cancelExit()" type="button">
+                    Girar ahora 🎁
+                </button>
+            </div>
         </div>
     </div>
 
@@ -950,8 +1052,15 @@
 
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
+                // Si la confirmación está abierta, primero la cerramos
+                if (document.getElementById('confirmOverlay').classList.contains('active')) {
+                    cancelExit();
+                    return;
+                }
                 closeModal();
-                closeRoulette();
+                if (document.getElementById('rouletteOverlay').classList.contains('active')) {
+                    requestCloseRoulette();
+                }
             }
         });
 
@@ -1050,14 +1159,13 @@
         let isSpinning      = false;
         let hasSpun         = false;
 
-        // Paleta monocromática alternada
         const SEG_COLORS = [
-            { bg: '#0a0a0a', text: '#fafafa' },   // ink / paper
-            { bg: '#ffffff', text: '#0a0a0a' },   // paper / ink
-            { bg: '#737373', text: '#fafafa' },   // mid gray / paper
-            { bg: '#f5f5f5', text: '#0a0a0a' },   // canvas / ink
-            { bg: '#171717', text: '#fafafa' },   // ink-soft / paper
-            { bg: '#e5e5e5', text: '#0a0a0a' }    // hairline / ink
+            { bg: '#0a0a0a', text: '#fafafa' },
+            { bg: '#ffffff', text: '#0a0a0a' },
+            { bg: '#737373', text: '#fafafa' },
+            { bg: '#f5f5f5', text: '#0a0a0a' },
+            { bg: '#171717', text: '#fafafa' },
+            { bg: '#e5e5e5', text: '#0a0a0a' }
         ];
 
         function drawWheel(rotation) {
@@ -1070,7 +1178,6 @@
                 const start = -Math.PI / 2 + i * SEG_ANGLE;
                 const end   = start + SEG_ANGLE;
 
-                // Relleno
                 ctx.beginPath();
                 ctx.moveTo(0, 0);
                 ctx.arc(0, 0, R - 6, start, end);
@@ -1078,12 +1185,10 @@
                 ctx.fillStyle = SEG_COLORS[i].bg;
                 ctx.fill();
 
-                // Borde separador
                 ctx.strokeStyle = '#0a0a0a';
                 ctx.lineWidth   = 2;
                 ctx.stroke();
 
-                // Texto radial
                 ctx.save();
                 ctx.rotate(start + SEG_ANGLE / 2);
                 ctx.fillStyle = SEG_COLORS[i].text;
@@ -1125,15 +1230,60 @@
             }
         }
 
+        /* ── Cierre de la ruleta con confirmación ── */
+        function requestCloseRoulette() {
+            // Ignorar intentos de cierre mientras la ruleta está girando
+            if (isSpinning) return;
+
+            // Si aún no ha girado, pedir confirmación
+            if (!hasSpun) {
+                showExitConfirm();
+                return;
+            }
+
+            closeRoulette();
+        }
+
         function closeRoulette() {
             document.getElementById('rouletteOverlay').classList.remove('active');
             document.body.style.overflow = '';
+            hideExitConfirm();
         }
 
         function closeRouletteOnOverlay(e) {
-            if (e.target === document.getElementById('rouletteOverlay')) closeRoulette();
+            if (e.target === document.getElementById('rouletteOverlay')) {
+                requestCloseRoulette();
+            }
         }
 
+        function showExitConfirm() {
+            document.getElementById('confirmOverlay').classList.add('active');
+        }
+
+        function hideExitConfirm() {
+            document.getElementById('confirmOverlay').classList.remove('active');
+        }
+
+        function confirmExit() {
+            hideExitConfirm();
+            // Marcar el día como usado para que no pueda reintentar recargando la página
+            if (!hasSpun) {
+                setLS(LS_LAST_DATE, todayStr());
+            }
+            closeRoulette();
+        }
+
+        function cancelExit() {
+            hideExitConfirm();
+        }
+
+        function closeConfirmOnOverlay(e) {
+            if (e.target === document.getElementById('confirmOverlay')) {
+                cancelExit();
+            }
+        }
+
+        /* ── Giro de la ruleta ── */
         function spinWheel() {
             if (isSpinning || hasSpun) return;
             isSpinning = true;
@@ -1183,10 +1333,21 @@
 
         function onSpinComplete(winIndex) {
             const prize = PRIZES[winIndex].name;
+            const day   = new Date().getDay(); // 0 = domingo, 6 = sábado
 
             setLS(LS_LAST_DATE, todayStr());
             setLS(LS_LAST_PRIZE, prize);
             removeLS(LS_PENDING);
+
+            // Mensaje dinámico según el día
+            let nextSpinText;
+            if (day === 0) {
+                nextSpinText = 'Tu próxima oportunidad será el sábado.';
+            } else if (day === 6) {
+                nextSpinText = 'Podrás volver a girar mañana domingo.';
+            } else {
+                nextSpinText = 'Podrás volver a girar el próximo sábado.';
+            }
 
             const result = document.getElementById('rouletteResult');
             result.innerHTML = `
@@ -1195,7 +1356,7 @@
                 <strong>${prize}</strong>
                 <div class="result-note">
                     Muestra esta pantalla al mesero para reclamar tu premio.<br>
-                    Podrás volver a girar mañana.
+                    ${nextSpinText}
                 </div>
             `;
             result.classList.add('show');
